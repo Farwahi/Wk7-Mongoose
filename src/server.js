@@ -1,104 +1,46 @@
 const express = require("express");
+const mongoose = require("mongoose");
 
 const app = express();
 
-// HTTP Verbs - GET ,POST,PUT,DELETE
-
-// const response = await fetch("http://someaddress.com") //sends GET request
-
-// HTTP Verb GET
-app.get("/example", (request, response) => {
-    response.send("Hello Farwa");
-});
-
-const fakeArr = [];
-
 app.use(express.json());
 
-// ------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------
-app.get("/books",(request, response) =>{
-    console.log("title:", request.body.title);
-    console.log("genre:", request.body.genre);
-    console.log("author:", request.body.author);
-    
-    fakeArr.push(request.body);
-    let awesome;
-  for (let i = 0; i < fakeArr.length; i++) {
-    if (fakeArr[i].title === request.body.title) {
-      awesome = "it's awsome";
-    }
-  }
-  console.log(awesome);
-  response.send({ message: "success", newBook: fakeArr[fakeArr.length - 1] });
-});
-
-// ----------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------
-app.post("/books",(request, response) =>{
-    console.log("title:", request.body.title);
-    console.log("genre:", request.body.genre);
-    console.log("author:", request.body.author);
-    
-    fakeArr.push(request.body);
-    let awesome="awesome";
-  for (let i = 0; i < fakeArr.length; i++) {
-    if (fakeArr[i].title === request.body.title) {
-      awesome = "it's awsome";
-    }
-  }
-  console.log(awesome);
-  response.send({ message: "success", newBook: fakeArr[fakeArr.length - 1] });
-});
-   
-
-// ------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------
-app.delete("/books", (request, response) => {
-  const { title, author } = request.body;
-
-  // Find the book to delete based on title or author
-  const bookToDelete = fakeArr.find(
-    (book) =>
-      book.title === title || book.author === author
+const connection = async () => {
+  await mongoose.connect(
+    "mongodb+srv://michael:b8y6ZekZY5HNPQEm@cluster0.ntmsxeg.mongodb.net/m54Week7"
   );
+  console.log("DB connection is working");
+};
 
-  if (!bookToDelete) {
-    return response.status(404).json({ message: "Book not found" });
-  }
+connection();
 
-  // Remove the book from the array
-  const indexToDelete = fakeArr.indexOf(bookToDelete);
-  fakeArr.splice(indexToDelete, 1);
-
-  return response.status(200).json({ message: "Book deleted successfully" });
+const bookSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  author: {
+    type: String,
+  },
+  genre: {
+    type: String,
+  },
 });
 
-// ------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------
+const Book = mongoose.model("Book", bookSchema);
 
 
-app.put("/books", (request, response) => {
-  const { title, author, genre } = request.body;
+app.get("/books", (request, response) => {});
 
-  // Find the book to update based on title
-  const bookToUpdate = fakeArr.find((book) => book.title === title);
+app.get("/books/getfirstbook", (request, response) => {});
 
-  if (!bookToUpdate) {
-    return response.status(404).json({ message: "Book not found" });
-  }
+app.post("/books", (request, response) => {});
 
-  // Update the book properties
-  bookToUpdate.author = author || bookToUpdate.author; // Update author if provided
-  bookToUpdate.genre = genre || bookToUpdate.genre; // Update genre if provided
+app.put("/books", (request, reponse) => {});
 
-  return response.status(200).json({ message: "Book updated successfully", updatedBook: bookToUpdate });
+app.delete("/books", (request, response) => {});
+
+app.listen(5001, () => {
+  console.log("Server is listening on port 5001");
 });
-
-// ------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------
-
-app.listen(5001, () =>{
-    console.log("Server is listening on port 5001");
-});
-
