@@ -19,13 +19,13 @@ module.exports = {
   addBook: addBook,
 };
 
+
 //=========================================================================================================
 
-const Book = require("./model/Book");
 
 const getAllBooks = async (request, response) => {
   try {
-    const allBooks = await Book.find(); // Retrieve all books from the database
+    const allBooks = await Book.find(); 
     response.send({ message: "Success! All books retrieved.", books: allBooks });
   } catch (error) {
     console.error("Error fetching books:", error);
@@ -39,12 +39,11 @@ module.exports = {
 
 //=========================================================================================================
 
-const Book = require("./model");
 
 const getBookById = async (request, response) => {
   try {
-    const bookId = request.params.id; // Assuming the book ID is passed as a parameter
-    const book = await Book.findById(bookId); // Retrieve the book by its ID
+    const bookId = request.params.id; 
+    const book = await Book.findById(bookId); 
     if (!book) {
       return response.status(404).send({ message: "Book not found" });
     }
@@ -61,18 +60,17 @@ module.exports = {
 
 //=======================================================================================================
 
-const Book = require("./model");
 
 const updateBook = async (request, response) => {
   try {
-    const bookId = request.params.id; // Assuming the book ID is passed as a parameter
+    const bookId = request.params.id; 
     const updatedFields = {
       title: request.body.title,
       author: request.body.author,
       genre: request.body.genre,
     };
     const updatedBook = await Book.findByIdAndUpdate(bookId, updatedFields, {
-      new: true, // Return the updated book after the update
+      new: true, 
     });
 
     if (!updatedBook) {
@@ -92,12 +90,11 @@ module.exports = {
 
 //=======================================================================================================
 
-const Book = require("./model");
 
 const deleteBook = async (request, response) => {
   try {
-    const bookId = request.params.id; // Assuming the book ID is passed as a parameter
-    const deletedBook = await Book.findByIdAndDelete(bookId); // Delete the book by its ID
+    const bookId = request.params.id;
+    const deletedBook = await Book.findByIdAndDelete(bookId); 
 
     if (!deletedBook) {
       return response.status(404).send({ message: "Book not found" });
@@ -115,3 +112,18 @@ module.exports = {
 };
 
 //======================================================================================================
+
+const findBookByTitle = async (request, response) => {
+    try {
+        const updatedBook = await Book.findByIdAndUpdate(request.params.id, request.body, { new: true });
+        if (!updatedBook) {
+            return response.status(404).json({ message: 'Book not found' });
+        }
+        response.json(updatedBook);
+    } catch (error) {
+        response.status(400).json({ message: error.message });
+    }
+};
+module.exports = {
+  findBookByTitle: findBookByTitle,
+};
