@@ -15,9 +15,6 @@ const addBook = async (request, response) => {
   }
 };
 
-module.exports = {
-  addBook: addBook,
-};
 
 
 //=========================================================================================================
@@ -33,9 +30,7 @@ const getAllBooks = async (request, response) => {
   }
 };
 
-module.exports = {
-  getAllBooks: getAllBooks,
-};
+
 
 //=========================================================================================================
 
@@ -54,9 +49,6 @@ const getBookById = async (request, response) => {
   }
 };
 
-module.exports = {
-  getBookById: getBookById,
-};
 
 //=======================================================================================================
 
@@ -84,9 +76,7 @@ const updateBook = async (request, response) => {
   }
 };
 
-module.exports = {
-  updateBook: updateBook,
-};
+
 
 //=======================================================================================================
 
@@ -107,9 +97,7 @@ const deleteBook = async (request, response) => {
   }
 };
 
-module.exports = {
-  deleteBook: deleteBook,
-};
+
 
 //======================================================================================================
 
@@ -125,5 +113,10 @@ const findBookByTitle = async (request, response) => {
     }
 };
 module.exports = {
+  addBook:addBook,
+  getAllBooks:getAllBooks,
+  getBookById:getBookById,
+  updateBook:updateBook,
+  deleteBook:deleteBook,
   findBookByTitle: findBookByTitle,
 };
